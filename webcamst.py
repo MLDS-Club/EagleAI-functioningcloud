@@ -128,10 +128,11 @@ ivideo = 0
 threads = []
 while not stop_button_pressed:
 	img_file_buffer = cap
-	bytes_data = img_file_buffer.getvalue()
-	img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
+	if img_file_buffer is not None:
+		bytes_data = img_file_buffer.getvalue()
+		img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
 
-	bdetected, confidence = detect_person(img, yolo_model)
+		bdetected, confidence = detect_person(img, yolo_model)
 
 	if img is not None:
 		img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
