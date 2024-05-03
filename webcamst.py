@@ -66,7 +66,7 @@ st.caption('Powered by OpenCV, Streamlit')
 st.text("Input your phone number to receive a text alert.")
 phone_number = st.text_input('Phone Number', '1234567890')
 
-cap = st.camera_input()
+cap = st.camera_input("Usercam")
 
 
 yolo_model = YOLO('yolov8n.pt')
