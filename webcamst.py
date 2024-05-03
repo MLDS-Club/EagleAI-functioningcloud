@@ -135,37 +135,37 @@ while not stop_button_pressed:
 		img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 		frame_placeholder.image(img, channels='RGB')
 
-	if (bdetected):
-		frames.append(img)
-		iframe += 1
-		if (iframe > UPPER_VIDEO_FRAMES_THRESHOLD):
-			print('Uploading to Gemini')
-			thread = Thread(target=upload_to_gemini, args=(genai, list(pframes) + frames))
-			thread.start()
-			
-			threads.append(thread)
+		if (bdetected):
+			frames.append(img)
+			iframe += 1
+			if (iframe > UPPER_VIDEO_FRAMES_THRESHOLD):
+				print('Uploading to Gemini')
+				thread = Thread(target=upload_to_gemini, args=(genai, list(pframes) + frames))
+				thread.start()
+				
+				threads.append(thread)
 
-			ivideo += 1
-			frames = []
-			pframes.clear()
-			iframe = 0
-		pdetected.append(True)
-	else:
-		pframes.append(img)
-		pdetected.append(False)
+				ivideo += 1
+				frames = []
+				pframes.clear()
+				iframe = 0
+			pdetected.append(True)
+		else:
+			pframes.append(img)
+			pdetected.append(False)
 
-		if (len(frames) > LOWER_VIDEO_FRAMES_THRESHOLD and all(not pd for pd in pdetected)):
-			print("Uploading to Gemini")
-			thread = Thread(target=upload_to_gemini, args=(genai, list(pframes) + frames))
-			thread.start()
-			threads.append(thread)
+			if (len(frames) > LOWER_VIDEO_FRAMES_THRESHOLD and all(not pd for pd in pdetected)):
+				print("Uploading to Gemini")
+				thread = Thread(target=upload_to_gemini, args=(genai, list(pframes) + frames))
+				thread.start()
+				threads.append(thread)
 
-			ivideo += 1
-			frames = []
-			pframes.clear()
+				ivideo += 1
+				frames = []
+				pframes.clear()
 
 
-for thread in threads:
-	thread.join()
+	for thread in threads:
+		thread.join()
 
 
