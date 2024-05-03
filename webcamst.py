@@ -6,6 +6,7 @@ from threading import Thread
 import google.generativeai as genai
 import os
 import smtplib
+from webcam import webcam
 
 FPS = 30 # frames per second
 CONFIDENCE_THRESHOLD = 0.6 # face detection confidence threshold
@@ -18,7 +19,7 @@ NOT_DETECTED_THRESHOLD = 2 * FPS # number of frames to wait before stopping reco
 CARRIERS = {
     "att": "@mms.att.net",
     "tmobile": "@tmomail.net",
-    "verizon": "@vpix.com",
+    "verizon": "@vzwpix.com",
     "sprint": "@messaging.sprintpcs.com"
 }
 
@@ -65,9 +66,8 @@ st.caption('Powered by OpenCV, Streamlit')
 st.text("Input your phone number to receive a text alert.")
 phone_number = st.text_input('Phone Number', '1234567890')
 
-cap = cv2.VideoCapture(0)
-cap.set(3, 640)
-cap.set(4, 480)
+cap = webcam()
+
 
 yolo_model = YOLO('yolov8n.pt')
 # yolo_model.to('cuda')
@@ -125,8 +125,8 @@ pdetected = deque(maxlen=NOT_DETECTED_THRESHOLD)
 ivideo = 0
 
 threads = []
-while cap.isOpened() and not stop_button_pressed:
-	success, img = cap.read()
+while not stop_button_pressed:
+	img = cap
 	bdetected, confidence = detect_person(img, yolo_model)
 
 	if img is not None:
@@ -162,11 +162,8 @@ while cap.isOpened() and not stop_button_pressed:
 			frames = []
 			pframes.clear()
 
-	if cv2.waitKey(1) & 0xFF == ord("q") or stop_button_pressed:
-		break
 
 for thread in threads:
 	thread.join()
 
-cap.release()
-cv2.destroyAllWindows()
+
