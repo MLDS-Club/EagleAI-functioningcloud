@@ -126,7 +126,7 @@ ivideo = 0
 
 threads = []
 while not stop_button_pressed:
-	img = cap.read()
+	img = cap
 	bdetected, confidence = detect_person(img, yolo_model)
 
 	if img is not None:
