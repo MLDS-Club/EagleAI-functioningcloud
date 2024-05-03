@@ -6,6 +6,7 @@ from threading import Thread
 import google.generativeai as genai
 import os
 import smtplib
+import numpy as np
 # from webcam import webcam
 
 FPS = 30 # frames per second
@@ -126,7 +127,10 @@ ivideo = 0
 
 threads = []
 while not stop_button_pressed:
-	img = cap.getvalue()
+	img_file_buffer = cap
+	bytes_data = img_file_buffer.getvalue()
+	img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
+
 	bdetected, confidence = detect_person(img, yolo_model)
 
 	if img is not None:
