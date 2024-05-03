@@ -6,7 +6,7 @@ from threading import Thread
 import google.generativeai as genai
 import os
 import smtplib
-from webcam import webcam
+# from webcam import webcam
 
 FPS = 30 # frames per second
 CONFIDENCE_THRESHOLD = 0.6 # face detection confidence threshold
@@ -66,7 +66,7 @@ st.caption('Powered by OpenCV, Streamlit')
 st.text("Input your phone number to receive a text alert.")
 phone_number = st.text_input('Phone Number', '1234567890')
 
-cap = webcam()
+cap = st.camera_input()
 
 
 yolo_model = YOLO('yolov8n.pt')
